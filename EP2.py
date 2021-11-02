@@ -1,4 +1,6 @@
 import random, sys
+from colorama import init, Fore, Back, Style
+
 
 def cria_pecas():
     pecas = [
@@ -38,10 +40,71 @@ def verifica_ganhador(jogadores):
             return x
     return -1
 
+
+def posicoes_possiveis(mesa, jogador):
+
+    possiveis = []
+    
+    if mesa:
+        inicial = mesa[0][0]
+        final = mesa[-1][1]
+
+        for domino in jogador:
+            for num in range(0, 1):
+                if domino[num] == inicial or domino[num] == final:
+                    possiveis.append(jogador.index(domino))
+                    break
+
+    else:
+        possiveis = range(0, len(jogador))
+    
+    return possiveis
+
+
 def print_mesa(mesa):
-    print("Em Jogo")
+
+    for domino in mesa:
+        print("    *    ", end=" ")
+    print("")
+    for domino in mesa:
+        print("[", end=" ")
+        for num in range(0, 2):
+            if (domino[num]) == 0:
+                print(Fore.LIGHTBLACK_EX + "0", end=" ")
+            elif domino[num] == 1:
+                print(Fore.BLUE + "1", end=" ")
+            elif domino[num] == 2:
+                print(Fore.YELLOW + "2", end=" ")
+            elif domino[num] == 3:
+                print(Fore.GREEN + "3", end=" ")
+            elif domino[num] == 4:
+                print(Fore.MAGENTA + "4", end=" ")
+            elif domino[num] == 5:
+                print(Fore.RED + "5", end=" ")
+            elif domino[num] == 6:
+                print(Fore.CYAN + "6", end=" ")
+
+
+            if (num == 0):
+                print("|", end=" ")
+        print("]", end=" ")
+    print("\n")
+
+
+def soma_pecas(jogador):
+
+    total = 0
+
+    for domino in jogador:
+        total += sum(domino)
+
+    return total
+
 
 def main():
+
+    init()
+
     print("==> Design de Software ")
     print("Insper Dominó")
 
@@ -55,8 +118,20 @@ def main():
 
     print(jogo['jogadores'])
 
+    jogador_atual = 0
+
     while(verifica_ganhador(jogo['jogadores']) == -1):
+        print("MESA:")
         print_mesa(jogo['mesa'])
+
+        if (jogador_atual == 0):
+            print("Jogador: Você com " + len(jogo['jogadores'][jogador_atual]) + " peça(s)")
+        else:
+            print("Jogador: " + jogador_atual + " com " + len(jogo['jogadores'][jogador_atual]) + " peça(s)")
+
+        jogador_atual += 1
+
+
 
 if __name__ == "__main__":
     main()
