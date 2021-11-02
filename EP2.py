@@ -61,34 +61,44 @@ def posicoes_possiveis(mesa, jogador):
     return possiveis
 
 
-def print_mesa(mesa):
+def print_local(local, selecionavel=[]):
 
-    for domino in mesa:
-        print("    *    ", end=" ")
-    print("")
-    for domino in mesa:
-        print("[", end=" ")
+    if (selecionavel):
+        for domino_index in range(0, len(local)):
+            if domino_index in selecionavel:
+                print("  *   ", end="")
+            else:
+                print("    ", end="")
+        
+        print("")
+    for domino in local:
+        print("[", end="")
         for num in range(0, 2):
             if (domino[num]) == 0:
-                print(Fore.LIGHTBLACK_EX + "0", end=" ")
+                print(Fore.LIGHTBLACK_EX + "0", end="")
             elif domino[num] == 1:
-                print(Fore.BLUE + "1", end=" ")
+                print(Fore.BLUE + "1", end="")
             elif domino[num] == 2:
-                print(Fore.YELLOW + "2", end=" ")
+                print(Fore.YELLOW + "2", end="")
             elif domino[num] == 3:
-                print(Fore.GREEN + "3", end=" ")
+                print(Fore.GREEN + "3", end="")
             elif domino[num] == 4:
-                print(Fore.MAGENTA + "4", end=" ")
+                print(Fore.MAGENTA + "4", end="")
             elif domino[num] == 5:
-                print(Fore.RED + "5", end=" ")
+                print(Fore.RED + "5", end="")
             elif domino[num] == 6:
-                print(Fore.CYAN + "6", end=" ")
+                print(Fore.CYAN + "6", end="")
 
-
+            print(Fore.WHITE, end="")
             if (num == 0):
-                print("|", end=" ")
+                print("|", end="")
         print("]", end=" ")
-    print("\n")
+    print("")
+    if (selecionavel):
+        for domino_index in range(0, len(local)):
+            print("  " + str(domino_index) + "  ", end=" ")
+            
+    print("")
 
 
 def soma_pecas(jogador):
@@ -100,6 +110,8 @@ def soma_pecas(jogador):
 
     return total
 
+def jogada_aleatoria(jogo, indice_jogador):
+    return None
 
 def main():
 
@@ -111,26 +123,30 @@ def main():
     print("Bem-vindo(a) ao jogo de Dominó! O objetivo desse jogo é ficar sem peças na sua mão antes dos outros jogadores.")
     print("Vamos começar!!!")
 
-    print("Quantos jogadores? (2-4)\n")
+    print("Quantos jogadores? (2-4) ")
     numero_jogadores = int(input())
 
     jogo = inicia_jogo(numero_jogadores, cria_pecas())
 
-    print(jogo['jogadores'])
-
-    jogador_atual = 0
+    jogador_atual = random.randint(0, numero_jogadores - 1)
 
     while(verifica_ganhador(jogo['jogadores']) == -1):
         print("MESA:")
-        print_mesa(jogo['mesa'])
+        print_local(jogo['mesa'])
 
         if (jogador_atual == 0):
-            print("Jogador: Você com " + len(jogo['jogadores'][jogador_atual]) + " peça(s)")
+            print("Jogador: Você com " + str(len(jogo['jogadores'][jogador_atual])) + " peça(s)")
+            print_local(jogo['jogadores'][jogador_atual], posicoes_possiveis(jogo['mesa'], jogo['jogadores'][jogador_atual]))
+
+            print("Escolha a peça:", end=" ")
+
+            indice_peca = int(input())
+
         else:
-            print("Jogador: " + jogador_atual + " com " + len(jogo['jogadores'][jogador_atual]) + " peça(s)")
+            print("Jogador: " + str(jogador_atual) + " com " + str(len(jogo['jogadores'][jogador_atual])) + " peça(s)")
 
         jogador_atual += 1
-
+        jogador_atual = jogador_atual % (numero_jogadores)
 
 
 if __name__ == "__main__":
