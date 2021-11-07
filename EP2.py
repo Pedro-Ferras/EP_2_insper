@@ -25,29 +25,16 @@ def main():
         print("MESA:")
         print_local(jogo['mesa'])
 
-        if (jogador_atual == 0):
-            print("Jogador: Você com " + str(len(jogo['jogadores'][jogador_atual])) + " peça(s)")
-            print_local(jogo['jogadores'][jogador_atual], posicoes_possiveis(jogo['mesa'], jogo['jogadores'][jogador_atual]))
-
-            print("Escolha a peça:", end=" ")
-
-            possivel = [str(x) for x in posicoes_possiveis(jogo['mesa'], jogo['jogadores'][jogador_atual])]
-            indice_peca = input()
-            if indice_peca not in possivel:
-                print("Escolha um valor valido!")
-                time.sleep(2)
-            else:
-                indice_peca = int(indice_peca)
-                inserir_peca(jogo['mesa'], jogo['jogadores'][jogador_atual][indice_peca])
-
-                jogo['jogadores'][jogador_atual].remove(jogo['jogadores'][jogador_atual][indice_peca])
-
-        else:
-            print("Jogador: " + str(jogador_atual) + " com " + str(len(jogo['jogadores'][jogador_atual])) + " peça(s)")
+        fazer_jogada(jogo, jogador_atual, jogador_atual != 0)
 
         jogador_atual += 1
         jogador_atual = jogador_atual % (numero_jogadores)
 
+    vencedor = verifica_ganhador(jogo['jogadores'])
+    if (vencedor == 0):
+        print("Você ganhou, parabéns!")
+    else:
+        print("Vencedor: Jogador " + str(verifica_ganhador(jogo['jogadores'])))
 
 if __name__ == "__main__":
     main()

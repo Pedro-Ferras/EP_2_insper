@@ -1,4 +1,6 @@
-import time
+import time, random
+
+from domino.jogo import *
 
 def verifica_ganhador(jogadores):
     for x in range(0, len(jogadores)):
@@ -57,3 +59,60 @@ def inserir_peca(mesa, peca):
 
 def jogada_aleatoria(jogo, indice_jogador):
     return None
+
+def fazer_jogada(jogo, jogador_atual, aleatoria=False):
+
+    if not aleatoria:
+        print("Jogador: Você com " + str(len(jogo['jogadores'][jogador_atual])) + " peça(s)")
+        print_local(jogo['jogadores'][jogador_atual], posicoes_possiveis(jogo['mesa'], jogo['jogadores'][jogador_atual]))
+    else:
+        print("Jogador: " + str(jogador_atual) + " com " + str(len(jogo['jogadores'][jogador_atual])) + " peça(s)")
+
+    possivel = posicoes_possiveis(jogo['mesa'], jogo['jogadores'][jogador_atual])
+
+    pular_vez = False
+
+    while not possivel:
+        print("Não tem peças possíveis. PEGANDO DO MONTE!")
+        time.sleep(0.5)
+        if not aleatoria:
+            print("pressione ENTER")
+            input()
+
+        if (jogo['monte']):
+            escolhida = random.choice(jogo['monte'])
+            jogo['monte'].remove(escolhida)
+            jogo['jogadores'][jogador_atual].append(escolhida)
+
+            possivel = posicoes_possiveis(jogo['mesa'], jogo['jogadores'][jogador_atual])
+        else:
+            possivel = True
+            pular_vez = True
+        if not aleatoria:
+            print_local(jogo['jogadores'][jogador_atual], posicoes_possiveis(jogo['mesa'], jogo['jogadores'][jogador_atual]))
+
+
+    if not aleatoria:
+        print("Escolha a peça:", end=" ")
+        indice_peca = input()
+    else:
+        indice_peca = random.choice(possivel)
+        print("Colocou: ", end="")
+        print_domino(jogo['jogadores'][jogador_atual][indice_peca])
+        print("\n", end="")
+
+    if not pular_vez:
+        
+        if aleatoria:
+            inserir_peca(jogo['mesa'], jogo['jogadores'][jogador_atual][indice_peca])
+            jogo['jogadores'][jogador_atual].remove(jogo['jogadores'][jogador_atual][indice_peca])
+            time.sleep(0.7)
+        else:
+            if indice_peca not in [str(x) for x in possivel]:
+                print("Escolha um valor valido!")
+                time.sleep(0.5)
+            else:
+                indice_peca = int(indice_peca)
+                inserir_peca(jogo['mesa'], jogo['jogadores'][jogador_atual][indice_peca])
+
+                jogo['jogadores'][jogador_atual].remove(jogo['jogadores'][jogador_atual][indice_peca])

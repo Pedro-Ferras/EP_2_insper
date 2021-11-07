@@ -19,18 +19,41 @@ def cria_pecas():
 
 def inicia_jogo(numero_jogadores, pecas_possiveis):
 
-    jogo = {'jogadores': {}, 'monte': {}, 'mesa': []}
+    jogo = {'jogadores': {}, 'monte': [], 'mesa': []}
 
     pecas_restantes = pecas_possiveis
 
     for x in range(0, numero_jogadores):
-        jogo['jogadores'][x] = random.sample(pecas_possiveis, 7)
+        jogo['jogadores'][x] = random.sample(pecas_restantes, 7)
 
         pecas_restantes = [domino for domino in pecas_restantes if (domino not in jogo['jogadores'][x])]
 
     jogo['monte'] = pecas_restantes
 
     return jogo
+
+def print_domino(domino):
+    print("[", end="")
+    for num in range(0, 2):
+        if (domino[num]) == 0:
+            print(Fore.LIGHTBLACK_EX + "0", end="")
+        elif domino[num] == 1:
+            print(Fore.BLUE + "1", end="")
+        elif domino[num] == 2:
+            print(Fore.YELLOW + "2", end="")
+        elif domino[num] == 3:
+            print(Fore.GREEN + "3", end="")
+        elif domino[num] == 4:
+            print(Fore.MAGENTA + "4", end="")
+        elif domino[num] == 5:
+            print(Fore.RED + "5", end="")
+        elif domino[num] == 6:
+            print(Fore.CYAN + "6", end="")
+
+        print(Fore.WHITE, end="")
+        if (num == 0):
+            print("|", end="")
+    print("]", end=" ")
 
 def print_local(local, selecionavel=[]):
 
@@ -43,27 +66,7 @@ def print_local(local, selecionavel=[]):
         
         print("")
     for domino in local:
-        print("[", end="")
-        for num in range(0, 2):
-            if (domino[num]) == 0:
-                print(Fore.LIGHTBLACK_EX + "0", end="")
-            elif domino[num] == 1:
-                print(Fore.BLUE + "1", end="")
-            elif domino[num] == 2:
-                print(Fore.YELLOW + "2", end="")
-            elif domino[num] == 3:
-                print(Fore.GREEN + "3", end="")
-            elif domino[num] == 4:
-                print(Fore.MAGENTA + "4", end="")
-            elif domino[num] == 5:
-                print(Fore.RED + "5", end="")
-            elif domino[num] == 6:
-                print(Fore.CYAN + "6", end="")
-
-            print(Fore.WHITE, end="")
-            if (num == 0):
-                print("|", end="")
-        print("]", end=" ")
+        print_domino(domino)
     print("")
     if (selecionavel):
         for domino_index in range(0, len(local)):
