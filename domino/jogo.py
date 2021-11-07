@@ -37,9 +37,9 @@ def print_local(local, selecionavel=[]):
     if (selecionavel):
         for domino_index in range(0, len(local)):
             if domino_index in selecionavel:
-                print("  *   ", end="")
+                print("  *  ", end=" ")
             else:
-                print("    ", end="")
+                print("     ", end=" ")
         
         print("")
     for domino in local:

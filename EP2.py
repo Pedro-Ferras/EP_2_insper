@@ -31,13 +31,16 @@ def main():
 
             print("Escolha a peça:", end=" ")
 
-            possivel = [str(x) for x in range(0, len(jogo['jogadores'][jogador_atual]))]
+            possivel = [str(x) for x in posicoes_possiveis(jogo['mesa'], jogo['jogadores'][jogador_atual])]
             indice_peca = input()
             if indice_peca not in possivel:
                 print("Escolha um valor valido!")
                 time.sleep(2)
             else:
                 indice_peca = int(indice_peca)
+                inserir_peca(jogo['mesa'], jogo['jogadores'][jogador_atual][indice_peca])
+
+                jogo['jogadores'][jogador_atual].remove(jogo['jogadores'][jogador_atual][indice_peca])
 
         else:
             print("Jogador: " + str(jogador_atual) + " com " + str(len(jogo['jogadores'][jogador_atual])) + " peça(s)")

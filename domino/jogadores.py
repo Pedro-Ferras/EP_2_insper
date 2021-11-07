@@ -16,8 +16,8 @@ def posicoes_possiveis(mesa, jogador):
         final = mesa[-1][1]
 
         for domino in jogador:
-            for num in range(0, 1):
-                if domino[num] == inicial or domino[num] == final:
+            for num in range(0, 2):
+                if domino[num] == inicial or domino[num] == final and jogador.index(domino) not in possiveis:
                     possiveis.append(jogador.index(domino))
                     break
 
@@ -40,6 +40,18 @@ def inserir_peca(mesa, peca):
     if mesa:
         start = mesa[0]
         end = mesa[-1]
+        
+        if start[0] == peca[0]:
+            peca.reverse()
+            mesa.insert(0, peca)
+        elif (start[0] == peca[1]):
+            mesa.insert(0, peca)
+        elif (end[1] == peca[0]):
+            mesa.append(peca)
+        elif (end[1] == peca[1]):
+            peca.reverse()
+            mesa.append(peca)
+
     else:
         mesa.append(peca)
 
